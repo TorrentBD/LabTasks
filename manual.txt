@@ -1,0 +1,210 @@
+**************************	Mituram Ray  	*********************************************
+**************************	13045409	*********************************************
+**************************	CSE RU		*********************************************
+
+------------Image processing ----------
+
+
+1. kinds of images 
+	-grayscale
+	-binary
+	-color
+	-indexed
+
+2.  matlab functions
+	-imread('name.jpg')
+	-imshow(variable)
+	-imfinfo('name.jpg')
+	-size(var)
+	-colormap(mapname)  // implement named colormap on current 
+	-impixelinfo       //figure a pixel er intensity dekhabe
+	-im2 = ones(256,256);   // create a white image n*m
+	-imshow(im2)            // show the image
+
+	 
+
+3. 	-impixel(im2,30,40);	//30*40 position a RGB value 
+	-[im,bmap]=imread('name.jpg');	//read indexed iamge //b=index   bmap=clormap
+	-imshow(b,bmap);		//sudhu b dile real pic dekhabe na
+
+4.	-x=ind2gray(im,bmap);
+	-x=rgb2gray(a);       
+	-others 
+5.	d=a<120;		//intencity of a is less than 120=1 and other 0 //converting into binary image 
+
+6.	-r=imresize(a,1/2);	//resizing the image
+
+
+
+
+
+		----point transformation---------
+
+	*Thresholding : => produce binary image
+	*Contrast Stretching : => Spread out the gray level distubution(  make dark portion darker and bright portion brighter )
+	*Logarithm Operator : => Reducing the contrast of brighter region
+	*Exponential/power Operator : => Enhancing the contrast of brighter region
+	*Histogram Equalisation : => Modifying the intensity distribution
+
+
+7.	d=imadd(a,100);		//100 intensity increased(brightness)
+	d=imsubtract(a,100);
+
+	s=C*log(1+r)		//s=output, r=image,   C=constant //logarithm=>reduce the contrast
+	s=C*r^value		//power tranformation
+
+8.	-i=imread('name.jpg')  //name must gray scale image 
+	-h=imhist(i);		//histgram of i
+	-sim=imadjust(i,[hlow,hhigh],[urlow,urhigh]);	//strech contrast => hlow=histogram er min dim , .....   urlow=tumi koto low strech and urhigh= max strech
+	=> hlow=75 hole 75/255=0.3 and ........
+
+	-heq=histeq(i);		//histgram equalization 
+
+9.
+	*Logarithm Operator : => Reducing the contrast of brighter region
+
+		clear all;
+
+		g = imread('gg.jpg');
+
+		gd=im2double(g);
+
+		[rows,cols] = size(gd);
+
+		for i=1:rows
+  		  for j=1:cols
+        		x(i,j)=1*log(1+gd(i,j));
+    			end
+		end
+
+		imshow(x);
+
+10. Histogram by Me
+
+	im =imread('rgb.png');
+
+g = rgb2gray(im);
+
+h=zeros(1,255);
+[rows cols] = size(g);
+x=0;
+
+for i=0:255
+    x=0;
+    for m=1:rows
+        for n=1:cols
+            if(g(m,n)==i)
+                x=x+1;
+            end
+        end
+    end
+    h(1,i+1)=x;
+end
+
+subplot(411);
+imshow(im);
+title('Original Image');
+
+subplot(412);
+imshow(g);
+title('Converted Gray Image');
+
+subplot(413);
+imhist(g);
+title('Hist. of Converted Gray Image(Using imhist)');
+
+subplot(414);
+%bar(t,h);
+stem(h);
+title('Hist. of Converted Gray Image(without imhist)');
+
+
+
+11. Histogram Equalization by Me
+
+clc;
+clear all;
+im =imread('rgb.png');
+
+g = rgb2gray(im);
+
+[rows cols] = size(g);
+total = rows*cols;
+gh = uint8(zeros(rows,cols));
+
+x=0;
+
+for i=0:255
+    x=0;
+    for m=1:rows
+        for n=1:cols
+            if(g(m,n)==i)
+                x=x+1;
+            end
+        end
+    end
+    h(i+1)=x;
+end
+
+cdf(1)= h(1)/total;
+
+for k=2:256
+    cdf(k) =cdf(k-1) + h(k)/total;
+end
+
+
+for v=1:256
+    gl(v) = round(cdf(v)*255);
+end
+ 
+for i=1:rows
+    for j=1:cols
+        gh(i,j) = gl(g(i,j)+1);
+    end
+end
+
+
+subplot(411);
+imshow(im);
+title('Original Image');
+
+subplot(412);
+imshow(g);
+title('Converted Gray Image');
+
+subplot(413);
+heq = histeq(g);
+imshow(heq);
+title('Hist.  Equ. of Converted Gray Image(Using histeq)');
+
+subplot(414);
+imshow(gh);
+title('Hist.Equ. of Converted Gray Image(without histeq)');
+
+ 
+
+13.	
+
+
+
+ 
+
+
+
+
+	  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
